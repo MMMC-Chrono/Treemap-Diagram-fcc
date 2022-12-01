@@ -51,5 +51,9 @@ function collectedData(data) {
                    .attr('data-name', (d) => d.data.name)
                    .attr('data-category', (d) => d.data.category)
                    .attr('data-value', (d) => d.data.value)
-                   
+   const legend = d3.select('body')
+                    .append('svg')
+                    .attr('width', 500)
+                    .attr('height', 155)
+                    .attr('id', 'legend')
 }
