@@ -56,4 +56,23 @@ function collectedData(data) {
                     .attr('width', 500)
                     .attr('height', 155)
                     .attr('id', 'legend')
+
+   let categoryArr = rootData.map((d) => d.data.category);
+
+   categoryArr = categoryArr.filter((d, i) => {
+   if(categoryArr.indexOf(d) === i) return d;
+   })
+   
+   const legendItem = legend.selectAll('g')
+              .data(categoryArr)
+              .enter()
+              .append('g')
+              .attr('x', 200)
+              .append('rect')
+              .attr('class', 'legend-item')
+              .attr('x', 100)
+              .attr('y', 100)
+              .attr('width', 30)
+              .attr('height', 30)
+              .attr('fill', (d) => scale(categoryArr))
 }
