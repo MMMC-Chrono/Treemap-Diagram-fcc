@@ -20,7 +20,7 @@ function collectedData(data) {
                        .sort((a, b) => b.value - a.value)
 
    const treemap = d3.treemap()
-                     .size([960, 570])
+                     .size([1200, 800])
                      .padding(3)
 
    const root = treemap(hierarchy)
@@ -29,8 +29,8 @@ function collectedData(data) {
    const svg = d3.select('body')
                  .append('svg')
                  .attr('id', 'chart')
-                 .attr('width', 962)
-                 .attr('height', 572)
+                 .attr('width', 1200)
+                 .attr('height', 800)
 
    const colors = ['#ffcccc', '#ffe6cc', '#ffffcc', '	#e6ffcc', '	#d9ffcc', '#ccffe6', '#ccffff', '#cce6ff', '	#ccd9ff', '	#d9ccff', '#f2ccff', '	#ffccf2', '#ffccd9', '#ff99b3', '#b399ff', '#99ffff', '#ffff99', '#ff9999']
 
@@ -45,16 +45,17 @@ function collectedData(data) {
    const scale = d3.scaleOrdinal()
                    .domain(categories)
                    .range(colors)
-   const rect = svg.selectAll('rect')
+   const g = svg.selectAll('g')
                    .data(rootData)
                    .enter()
-                   .append('rect')
+                   .append('g')
+                   .attr('transform', (d)=> 'translate(' + d.x0 + ',' + d.y0 + ')')
+   const rect = g.append('rect')
                    .attr('class', 'tile')
-                   .attr('x', (d) => d.x0)
-                   .attr('y', (d) => d.y0)
                    .attr('width', (d) => d.x1 - d.x0)
                    .attr('height', (d) => d.y1 - d.y0)
                    .attr('fill', (d) => scale(d.data.category))
+                   .style('padding', 10)
                    .attr('data-name', (d) => d.data.name)
                    .attr('data-category', (d) => d.data.category)
                    .attr('data-value', (d) => d.data.value)
@@ -68,6 +69,30 @@ function collectedData(data) {
                    .on('mouseout', (d, i) => {
                      tooltip.style('opacity', 0)
                    })
+  function gameTitle(name) {
+    let firstName = name.split(':')
+    const splitNames = firstName[0].split(' ');
+    let ans;
+    for (let i = 0; i < splitNames.length; i++) {
+      if (splitNames[i].length <= 2) {
+        splitNames[i - 1] = splitNames[i-1]+ ' ' + splitNames[i]
+        splitNames.splice(i, 1)
+      }
+    }
+    return splitNames;
+  }
+  const text = g.append('text')
+                .attr('x', 18)
+                .attr('y', 13)
+                .selectAll('tspan')
+                .data((d)=>gameTitle(d.data.name))
+                .enter()
+                .append('tspan')
+                .attr('x', 4)
+                .attr('y', (d, i)=> {//console.log(d, i)
+                  return i === 0 ? 13 : (13 + (i * 10))
+                })
+                .html((d)=>d)
    const legend = d3.select('body')
                     .append('svg')
                     .attr('width', 500)
