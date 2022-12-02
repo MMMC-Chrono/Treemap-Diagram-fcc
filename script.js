@@ -72,7 +72,6 @@ function collectedData(data) {
   function gameTitle(name) {
     let firstName = name.split(':')
     const splitNames = firstName[0].split(' ');
-    let ans;
     for (let i = 0; i < splitNames.length; i++) {
       if (splitNames[i].length <= 2) {
         splitNames[i - 1] = splitNames[i-1]+ ' ' + splitNames[i]
